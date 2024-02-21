@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "electron": "^28.2.3"
+  },
+  "name": "lplot",
+  "version": "1.0.0",
+  "description": "A tool for lighting designers to edit and view light plots.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Max McDaniel",
+  "license": "ISC"
+}
