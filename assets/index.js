@@ -1,5 +1,7 @@
 setTimeout(init, 1500);
 
+let selected;
+
 function init() {
     const leftRack = document.getElementById('left');
     const middleRack = document.getElementById('middle');
@@ -63,7 +65,12 @@ function registerClick(lights) {
         let light = document.getElementById(id);
 
         light.addEventListener('click', (e) =>{
+            if (selected != light & selected != null) {
+                selected.setAttribute(`fill`, 'white');
+            }
+
             light.setAttribute('fill', 'blue');
+            selected = light;
         });
     };
 };
