@@ -1,4 +1,4 @@
-setTimeout(init, 1500);
+setTimeout(init, 1000);
 
 let selected;
 
@@ -65,12 +65,18 @@ function registerClick(lights) {
         let light = document.getElementById(id);
 
         light.addEventListener('click', (e) =>{
+            if (selected == light) {
+                selected.setAttribute('fill', 'white');
+                console.log(selected.getAttribute('fill'));
+                selected = null;
+            } else {
+                light.setAttribute('fill', 'gray');
+                selected = light;
+            };
+
             if (selected != light & selected != null) {
                 selected.setAttribute(`fill`, 'white');
-            }
-
-            light.setAttribute('fill', 'blue');
-            selected = light;
+            };
         });
     };
 };
