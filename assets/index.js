@@ -54,7 +54,7 @@ function init() {
 
     // Right Rack
     for (let i = 23; i <= rightNum; i++) {
-        right.innerHTML += lightTemplate.replace('id="test"', `id="light-${i}"`);
+        rightRack.innerHTML += lightTemplate.replace('id="test"', `id="light-${i}"`);
     };
 
     registerClick(lights);
@@ -66,16 +66,16 @@ function registerClick(lights) {
 
         light.addEventListener('click', (e) =>{
             if (selected == light) {
-                selected.setAttribute('fill', 'white');
-                console.log(selected.getAttribute('fill'));
+                selected.setAttribute('fill', 'white');;
                 selected = null;
             } else {
                 light.setAttribute('fill', 'gray');
+                
+                if (selected != null) {
+                    selected.setAttribute('fill', ' white');
+                }
+                
                 selected = light;
-            };
-
-            if (selected != light & selected != null) {
-                selected.setAttribute(`fill`, 'white');
             };
         });
     };
