@@ -73,10 +73,14 @@ function init() {
 		);
 	}
 
-	// Open File Button
+	// File Buttons
 	openBtn.addEventListener('click', (event) =>{
 		window.fileManager.openFile();
 	});
+
+	savebtn.addEventListener('click', (event) =>{
+		window.fileManager.saveFile(lights.left, lights.middle, lights.right);
+	})
 
 	updateConfig();
 	registerClick(lights);
