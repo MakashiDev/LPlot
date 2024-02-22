@@ -75,10 +75,10 @@ function init() {
 
     // Open config Menu
     configBtn.addEventListener('click', (e) =>{
-        if (configMenu.classList.contains("hidden")) {
-            configMenu.classList.remove("hidden");
+        if (configMenu.attributes.getNamedItem('hidden')) {
+            configMenu.removeAttribute('hidden');
         } else {
-            configMenu.classList.add("hidden");
+            configMenu.setAttribute('hidden', '');
         };
     });
 
