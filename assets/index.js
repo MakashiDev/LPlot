@@ -73,15 +73,7 @@ function init() {
 		);
 	}
 
-    // Open config Menu
-    configBtn.addEventListener('click', (e) =>{
-        if (configMenu.attributes.getNamedItem('hidden')) {
-            configMenu.removeAttribute('hidden');
-        } else {
-            configMenu.setAttribute('hidden', '');
-        };
-    });
-
+	updateConfig();
 	registerClick(lights);
 }
 
@@ -143,4 +135,15 @@ function changeColor(color) {
 
 function updateLights() {
 	init();
+	updateConfig();
 }
+
+function updateConfig() {
+	configBtn.addEventListener('click', (e) => {
+		if (configMenu.classList.contains('hidden')) {
+			configMenu.classList.remove('hidden');
+		} else {
+			configMenu.classList.add("hidden");
+		};
+	});
+};
