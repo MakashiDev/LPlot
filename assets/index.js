@@ -73,6 +73,11 @@ function init() {
 		);
 	}
 
+	// Open File Button
+	openBtn.addEventListener('click', (event) =>{
+		window.fileManager.openFile();
+	});
+
 	updateConfig();
 	registerClick(lights);
 }
