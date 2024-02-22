@@ -2,9 +2,14 @@ setTimeout(init, 1000);
 
 let selected;
 
+const configMenu = document.getElementById('config-menu');
 const leftRackInput = document.getElementById("lRack");
 const middleRackInput = document.getElementById("mRack");
 const rightRackInput = document.getElementById("rRack");
+
+const configBtn = document.getElementById('config-btn');
+const openBtn = document.getElementById('open-btn');
+const savebtn = document.getElementById('save-btn');
 
 leftRackInput.addEventListener("change", updateLights);
 middleRackInput.addEventListener("change", updateLights);
@@ -30,10 +35,10 @@ function init() {
 	const lightTemplate = `<div class="[&>*]:h-[5rem] [&>*]:w-6 flex items-center align-middle"><svg id="test" class="cursor-pointer text-amber-400" width="232" height="872" viewBox="0 0 232 872" fill="currentcolor" xmlns="http://www.w3.org/2000/svg"><path d="M115.5 866.5H6V838.5L46.5 821L34 755.5L6 719.5V480.5L34 424V178.5L6 5H225.5L197.5 178.5V424L225.5 480.5V719.5L197.5 755.5L185 821L225.5 838.5V866.5H116" stroke="black" stroke-width="10" /></svg></div>`;
 
 	// Left Rack
-	for (let i = 0; i < leftRackCount; i++) {
+	for (let i = 1; i <= leftRackCount; i++) {
 		lights.left.push({
 			id: `light-${i}`,
-			color: "amber",
+			color: "white",
 		});
 
 		leftRack.innerHTML += lightTemplate.replace(
@@ -43,10 +48,10 @@ function init() {
 	}
 
 	// Middle Rack
-	for (let i = 0; i < middleRackCount; i++) {
+	for (let i = 1; i <= middleRackCount; i++) {
 		lights.middle.push({
 			id: `light-${i + leftRackCount}`,
-			color: "amber",
+			color: "white",
 		});
 
 		middleRack.innerHTML += lightTemplate.replace(
@@ -56,10 +61,10 @@ function init() {
 	}
 
 	// Right Rack
-	for (let i = 0; i < rightRackCount; i++) {
+	for (let i = 1; i <= rightRackCount; i++) {
 		lights.right.push({
 			id: `light-${i + leftRackCount + middleRackCount}`,
-			color: "amber",
+			color: "white",
 		});
 
 		rightRack.innerHTML += lightTemplate.replace(
@@ -67,6 +72,15 @@ function init() {
 			`id="light-${i + leftRackCount + middleRackCount}"`
 		);
 	}
+
+    // Open config Menu
+    configBtn.addEventListener('click', (e) =>{
+        if (configMenu.classList.contains("hidden")) {
+            configMenu.classList.remove("hidden");
+        } else {
+            configMenu.classList.add("hidden");
+        };
+    });
 
 	registerClick(lights);
 }
