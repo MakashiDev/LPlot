@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-black text-white h-screen">
+		<div class="flex-col flex h-full">
+			<div class="h-1/4"></div>
+			<div class="h-3/4">
+				<div class="h-1/6">
+					<h1 id="welcome" class="text-4xl font-semibold text-center">
+						Welcome
+					</h1>
+				</div>
+				<div id="lightplots" class="flex flex-wrap gap-0">
+					<div
+						class="md:w-1/3 w-1/2 xl:w-1/4 p-4"
+						id="createNewButton"
+					>
+						<!-- Create new lightplot button -->
+						<div
+							class="bg-gradient-to-br from-blue-500 to-purple-600 h-full p-4 rounded-lg shadow-lg flex justify-center items-center cursor-pointer"
+						>
+							<h2 class="text-3xl font-semibold text-white">
+								Create New Light Plot
+							</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div
+			id="createNew"
+			class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50"
+		>
+			<div class="flex justify-center items-center w-full h-full">
+				<div
+					class="flex bg-gray-900 w-2/3 h-2/5 rounded-lg p-4 shadow-lg"
+				>
+					<div class="w-1/2 p-4">
+						<h2 class="text-3xl font-semibold text-white">
+							Create New Light Plot
+						</h2>
+					</div>
+					<div class="w-1/2 p-4 flex flex-col">
+						<label for="name" class="text-white">Name</label>
+						<input
+							type="text"
+							id="name"
+							class="w-full p-2 rounded-lg bg-gray-700 text-white"
+						/>
+
+						<label for="description" class="text-white"
+							>Description</label
+						>
+						<textarea
+							id="description"
+							class="w-full h-5/6 p-2 rounded-lg bg-gray-700 text-white"
+						></textarea>
+						<div class="flex justify-end items-end h-full gap-2">
+							<button
+								class="bg-red-500 py-2 px-5 rounded-lg shadow-lg text-white justify-self-end place-self-end self-end cursor-pointer mt-4"
+								onclick="document.getElementById('createNew').classList.add('hidden')"
+							>
+								Cancel
+							</button>
+							<button
+								class="bg-gradient-to-br from-blue-500 to-purple-600 py-2 px-5 rounded-lg shadow-lg text-white justify-self-end place-self-end self-end cursor-pointer mt-4"
+								onclick="createNewLightPlot(document.getElementById('name').value, document.getElementById('description').value)"
+							>
+								Create
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		// check if we are authorized to use the API
+		fetch("/protected")
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+				document.getElementById("welcome").innerText +=
+					" " + data.user.username;
+			}) // if we are not authorized, redirect to the login page
+			.catch((error) => {
+				console.log(error);
+				window.location.href = "/login";
+			});
+
+		// add event listener to the create new light plot button
+		document
+			.getElementById("createNewButton")
+			.addEventListener("click", () => {
+				document.getElementById("createNew").classList.remove("hidden");
+			});
+
+		function addLightPLotToDom(name, description, id) {
+			// add light plot to the DOM
+
+			// create a new div element
+			const newDiv = document.createElement("div");
+			newDiv.classList.add(
+				"md:w-1/3",
+				"w-1/2",
+				"xl:w-1/4",
+				"p-4",
+				"cursor-pointer"
+			);
+
+			newDiv.addEventListener("click", () => {
+				window.location.href = `/lightplot?id=${id}`;
+			});
+
+			// create a new div element
+			const innerDiv = document.createElement("div");
+			innerDiv.classList.add(
+				"bg-gray-800",
+				"h-full",
+				"p-4",
+				"rounded-lg"
+			);
+
+			// create a new h2 element
+			const h2 = document.createElement("h2");
+			h2.classList.add("text-2xl", "font-semibold");
+			h2.innerText = name;
+
+			// create a new p element
+			const p = document.createElement("p");
+			p.classList.add("text-lg");
+			p.innerText = description;
+
+			// append the h2 and p elements to the inner div
+			innerDiv.appendChild(h2);
+			innerDiv.appendChild(p);
+
+			// append the inner div to the new div
+			newDiv.appendChild(innerDiv);
+
+			// append the new div to the lightplots div
+			document.getElementById("lightplots").appendChild(newDiv);
+		}
+
+		function createNewLightPlot(name, description) {
+			// redirect to the new light plot page
+			window.location.href = `/lightplot?name=${name}&description=${description}`;
+		}
+
+		// get all light plots from the server
+		fetch("/lightplots")
+			.then((response) => response.json())
+			.then((data) => {
+				for (let i = 0; i < data.lightplots.length; i++) {
+					addLightPLotToDom(
+						data.lightplots[i].name,
+						data.lightplots[i].description,
+						data.lightplots[i].id
+					);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	</script>
+</html>

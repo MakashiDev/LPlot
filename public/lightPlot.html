@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>LPlot Designer</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script defer src="assets/index.js"></script>
+	</head>
+
+	<body class="bg-slate-900 p-0 m-0 font-sans">
+		<div id="config-menu" class="absolute text-white hidden">
+			<label for="lRack">Left Rack Amount</label>
+			<input
+				type="number"
+				id="lRack"
+				name="lRack"
+				value="8"
+				class="bg-slate-500 rounded-md p-2"
+			/>
+			<label for="mRack">Middle Rack Amount</label>
+			<input
+				type="number"
+				id="mRack"
+				name="mRack"
+				value="11"
+				class="bg-slate-500 rounded-md p-2"
+			/>
+			<label for="rRack">Right Rack Amount</label>
+			<input
+				type="number"
+				id="rRack"
+				name="rRack"
+				value="8"
+				class="bg-slate-500 rounded-md p-2"
+			/>
+		</div>
+		<div id="container" class="flex items-center w-full h-full">
+			<div class="w-1/3 h-screen flex align-middle items-center">
+				<div
+					id="left"
+					class="w-[36rem] h-[2rem] p-2 bg-gray-400 rotate-45 flex justify-between items-center [&>*]:h-[5rem] [&>*]:w-[36rem/8] brightness-50"
+				></div>
+				<div
+					class="mt-[88vh] w-1/3 h-20 [&_input]:bg-slate-500 [&_input]:text-white flex items-center [&_input]:transition-colors [&_input]:p-2 [&_input]:rounded-md absolute"
+				>
+					<div class="ml-[1.5vw]">
+						<input
+							class="cursor-pointer hover:bg-slate-400 w-16 m-2"
+							id="config-btn"
+							type="button"
+							value="Config"
+						/>
+						<input
+							class="cursor-pointer hover:bg-slate-400 w-16 m-2"
+							id="menu-btn"
+							type="button"
+							value="Home"
+						/>
+						<input
+							class="cursor-pointer hover:bg-slate-400 w-16 m-2"
+							id="save-btn"
+							type="button"
+							value="Save"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="w-1/3 flex items-center">
+				<div
+					id="middle"
+					class="w-[36rem] h-[2rem] bg-gray-400 mt-[46vh] flex justify-around items-center [&>*]:h-[5rem] [&>*]:w-[36rem/11] brightness-50"
+				></div>
+			</div>
+
+			<div class="w-1/3 h-screen flex align-middle items-center">
+				<div
+					id="right"
+					class="w-[36rem] h-[2rem] p-2 bg-gray-400 rotate-[-45deg] flex justify-between items-center [&>*]:h-[5rem] [&>*]:w-[36rem/8] brightness-50"
+				></div>
+			</div>
+		</div>
+
+		<div id="colorPicker" class="absolute z-40 text-center">
+			<div class="bg-slate-800 text-gray-400 cursor-move select-none">
+				pstt.. drag me
+			</div>
+
+			<div
+				class="bg-slate-800 w-fit flex flex-col justify-center items-center p-5 gap-2"
+			>
+				<div class="flex flex-col gap-1">
+					<div class="flex gap-1">
+						<div
+							class="bg-red-500 h-8 w-8 rounded-sm"
+							id="red-color"
+							onclick="changeColor('red')"
+						></div>
+						<div
+							class="bg-green-500 h-8 w-8 rounded-sm"
+							id="green-color"
+							onclick="changeColor('green')"
+						></div>
+						<div
+							class="bg-blue-500 h-8 w-8 rounded-sm"
+							id="blue-color"
+							onclick="changeColor('blue')"
+						></div>
+					</div>
+					<div class="flex gap-1">
+						<div
+							class="bg-purple-500 h-8 w-8 rounded-sm"
+							id="purple-color"
+							onclick="changeColor('purple')"
+						></div>
+						<div
+							class="bg-pink-500 h-8 w-8 rounded-sm"
+							id="pink-color"
+							onclick="changeColor('pink')"
+						></div>
+						<div
+							class="bg-orange-300 h-8 w-8 rounded-sm"
+							id="yellow-color"
+							onclick="changeColor('yellow')"
+						></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script defer>
+		//Make the DIV element draggagle:
+		dragElement(document.getElementById("colorPicker"));
+
+		function dragElement(elmnt) {
+			var pos1 = 0,
+				pos2 = 0,
+				pos3 = 0,
+				pos4 = 0;
+			if (document.getElementById(elmnt.id + "header")) {
+				/* if present, the header is where you move the DIV from:*/
+				document.getElementById(elmnt.id + "header").onmousedown =
+					dragMouseDown;
+			} else {
+				/* otherwise, move the DIV from anywhere inside the DIV:*/
+				elmnt.onmousedown = dragMouseDown;
+			}
+
+			function dragMouseDown(e) {
+				e = e || window.event;
+				e.preventDefault();
+				// get the mouse cursor position at startup:
+				pos3 = e.clientX;
+				pos4 = e.clientY;
+				document.onmouseup = closeDragElement;
+				// call a function whenever the cursor moves:
+				document.onmousemove = elementDrag;
+			}
+
+			function elementDrag(e) {
+				e = e || window.event;
+				e.preventDefault();
+				// calculate the new cursor position:
+				pos1 = pos3 - e.clientX;
+				pos2 = pos4 - e.clientY;
+				pos3 = e.clientX;
+				pos4 = e.clientY;
+				// set the element's new position:
+				elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+				elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+			}
+
+			function closeDragElement() {
+				/* stop moving when mouse button is released:*/
+				document.onmouseup = null;
+				document.onmousemove = null;
+			}
+		}
+	</script>
+</html>
